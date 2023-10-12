@@ -15,7 +15,7 @@ body {
     width: 50%;
     padding: 1rem;
 }
-.form-group {
+.form_group {
   margin-bottom: 2rem;
 }
 
@@ -34,7 +34,7 @@ input[type="text"]:focus {
     border-color: darkgoldenrod;
     box-shadow: 0 0 0 4px rgba(24, 117, 255, 0.25);
 }
-.box-result{
+.box_result{
     display: none;
 }
 
