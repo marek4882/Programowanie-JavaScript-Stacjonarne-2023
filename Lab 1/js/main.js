@@ -1,5 +1,5 @@
 let livechange = false; 
-function oblicz() {
+function count() {
   let value1 = parseFloat(document.getElementById("value_1").value) || 0;
   let value2 = parseFloat(document.getElementById("value_2").value) || 0;
   let value3 = parseFloat(document.getElementById("value_3").value) || 0;
