@@ -1,14 +1,15 @@
-let livechange = false; 
-function count() {
-  let value1 = parseFloat(document.getElementById("value_1").value) || 0;
-  let value2 = parseFloat(document.getElementById("value_2").value) || 0;
-  let value3 = parseFloat(document.getElementById("value_3").value) || 0;
-  let value4 = parseFloat(document.getElementById("value_4").value) || 0;
+let livechange = false;
 
-  let sum = value1 + value2 + value3 + value4;
-  let average = sum / 4;
-  let min = Math.min(value1, value2, value3, value4);
-  let max = Math.max(value1, value2, value3, value4);
+function count() {
+  const inputFields = Array.from(
+    document.querySelectorAll(".form_group input")
+  );
+  const values = inputFields.map((input) => parseFloat(input.value) || 0);
+
+  const sum = values.reduce((acc, val) => acc + val, 0);
+  const average = sum / inputFields.length;
+  const min = Math.min(...values);
+  const max = Math.max(...values);
 
   document.getElementById("sum_result").textContent = sum;
   document.getElementById("average_result").textContent = average;
@@ -19,22 +20,41 @@ function count() {
   boxResult.style.display = "block";
 }
 
-document.getElementById("calculate_button").addEventListener("click", function(){
+document
+  .getElementById("calculate_button")
+  .addEventListener("click", function () {
     livechange = true;
-    oblicz();
-});
-
-const inputFields = [
-  document.getElementById("value_1"),
-  document.getElementById("value_2"),
-  document.getElementById("value_3"),
-  document.getElementById("value_4"),
-];
-
-inputFields.forEach(function (inputField) {
-  inputField.addEventListener("input", function(){
-    if(livechange == true){
-        oblicz();
-    }
+    count();
   });
+
+document
+  .getElementById("add_field_button")
+  .addEventListener("click", function () {
+    const form = document.getElementById("calculator_form");
+    const newField = document.createElement("div");
+    newField.classList.add("form_group");
+
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = "text";
+    input.name = "dynamic_value";
+    input.classList.add("dynamic_input");
+    label.textContent =
+      "Value " + (document.querySelectorAll(".form_group").length + 1);
+
+    newField.appendChild(label);
+    newField.appendChild(input);
+    form.insertBefore(newField, document.getElementById("calculate_button"));
+
+    input.addEventListener("input", function () {
+      if (livechange) {
+        count();
+      }
+    });
+  });
+
+document.addEventListener("input", function () {
+  if (livechange) {
+    count();
+  }
 });
