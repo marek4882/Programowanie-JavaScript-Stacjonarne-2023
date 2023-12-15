@@ -2,9 +2,10 @@ document.addEventListener("keypress", onKeyPress);
 document.getElementById("recordBtn").addEventListener("click", recordSound);
 let element = document.getElementById("recordBtn");
 
-document.getElementById("playBtn").addEventListener("click", playRecordedSounds);
+document
+  .getElementById("playBtn")
+  .addEventListener("click", playRecordedSounds);
 document.getElementById("stopBtn").addEventListener("click", stopPlayback);
-
 
 const KeyToSound = {
   q: document.querySelector("#s1"),
@@ -26,29 +27,28 @@ function playSound(sound) {
 }
 
 const channel = [];
-let isRecording = false; 
+let isRecording = false;
 
 function recordSound() {
   isRecording = !isRecording;
   if (isRecording) {
-    channel.length = 0; 
+    channel.length = 0;
     element.style.background = "green";
-  }
-  else{
+  } else {
     element.style.background = "red";
   }
   document.addEventListener("keypress", function (event) {
     if (isRecording) {
       const sound = KeyToSound[event.key];
       if (sound) {
-        channel.push(event.key); 
+        channel.push(event.key);
       }
     }
   });
 }
 
-let playbackIndex = 0; 
-let playbackTimeout; 
+let playbackIndex = 0;
+let playbackTimeout;
 
 function playRecordedSounds() {
   if (channel.length === 0) {
@@ -72,7 +72,7 @@ function playNextSoundInSequence() {
     playbackTimeout = setTimeout(function () {
       playbackIndex++;
       playNextSoundInSequence();
-    }, 500); 
+    }, 500);
   } else {
     element.style.background = "red";
   }
@@ -83,4 +83,3 @@ function stopPlayback() {
   element.style.background = "red";
   playbackIndex = 0;
 }
-

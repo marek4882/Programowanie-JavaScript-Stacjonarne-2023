@@ -93,3 +93,9 @@ body {
 .wrapper .display__item {
   margin: 0.5rem 0.3rem;
 }
+
+.weather-container {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}

@@ -16,11 +16,10 @@ const fetchWeather = async (city) => {
 const createWeather = (data) => {
   const weatherCard = document.createElement("article");
   const urlIcon = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
-
   weatherCard.innerHTML = `
       <img src="${urlIcon}" alt="Icon of weather" />
       <h2>${data.name}</h2>
-      <p>Temperature: ${data.main.temp}</p>
+      <p>Temperature: ${Math.round(data.main.temp)}<sup>o</sup>C</p>
       <p>Humidity: ${data.main.humidity}%</p>
     `;
   return weatherCard;
