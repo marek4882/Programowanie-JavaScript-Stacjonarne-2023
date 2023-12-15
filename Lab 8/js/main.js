@@ -1,5 +1,6 @@
 document.getElementById("addCity").addEventListener("click", addWeather);
 const cityInput = document.getElementById("cityInput");
+const weatherContainer = document.getElementById("weatherContainer");
 const apiKey = "6f86a2a775bed699ef7fcfccafa99196";
 
 let cities = JSON.parse(localStorage.getItem("cities")) || [];
@@ -22,23 +23,38 @@ const createWeather = (data) => {
       <p>Temperature: ${data.main.temp}</p>
       <p>Humidity: ${data.main.humidity}%</p>
     `;
+  return weatherCard;
 };
 
-async function updateWeather() {
+const updateWeather = async () => {
+  weatherContainer.innerHTML = "";
   for (const city of cities) {
     const weatherData = await fetchWeather(city);
-    createWeather(weatherData);
+    const weatherCard = createWeather(weatherData);
+    weatherContainer.appendChild(weatherCard);
+  }
+};
+
+async function addWeather() {
+  const city = cityInput.value.trim();
+  if (city !== "") {
+    if (!cities.includes(city)) {
+      cities.push(city);
+      localStorage.setItem("cities", JSON.stringify(cities));
+      cityInput.value = "";
+      const newCityWeatherData = await fetchWeather(city);
+      const newCityWeatherCard = createWeather(newCityWeatherData);
+      weatherContainer.appendChild(newCityWeatherCard);
+    } else {
+      console.log(`${city} zostało już wyszukane!`);
+    }
   }
 }
 
-function addWeather() {
-  const city = cityInput.value;
-  cities.push(city);
-  localStorage.setItem("cities", JSON.stringify(cities));
-  cityInput.value = "";
-  updateWeather();
+function clearLocalStorage() {
+  localStorage.clear();
+  cities = [];
 }
 
-updateWeather();
-
+window.onload = clearLocalStorage;
 setInterval(updateWeather, 300000);
