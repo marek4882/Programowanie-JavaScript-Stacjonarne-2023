@@ -5,6 +5,8 @@ const apiKey = "6f86a2a775bed699ef7fcfccafa99196";
 
 let cities = JSON.parse(localStorage.getItem("cities")) || [];
 
+// Wyświetl pogodę dla wszystkich zapisanych miast
+
 const fetchWeather = async (city) => {
   const response = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
@@ -22,6 +24,13 @@ const createWeather = (data) => {
       <p>Temperature: ${Math.round(data.main.temp)}<sup>o</sup>C</p>
       <p>Humidity: ${data.main.humidity}%</p>
     `;
+  // Dodaj przycisk do usuwania miasta z listy
+  const deleteButton = document.createElement("button");
+  deleteButton.textContent = "X";
+  deleteButton.addEventListener("click", () => {
+    removeCity(data.name);
+  });
+  weatherCard.appendChild(deleteButton);
   return weatherCard;
 };
 
@@ -33,27 +42,35 @@ const updateWeather = async () => {
     weatherContainer.appendChild(weatherCard);
   }
 };
+updateWeather();
 
 async function addWeather() {
   const city = cityInput.value.trim();
   if (city !== "") {
     if (!cities.includes(city)) {
-      cities.push(city);
-      localStorage.setItem("cities", JSON.stringify(cities));
-      cityInput.value = "";
       const newCityWeatherData = await fetchWeather(city);
-      const newCityWeatherCard = createWeather(newCityWeatherData);
-      weatherContainer.appendChild(newCityWeatherCard);
+      if (newCityWeatherData.cod === 200) {
+        cities.push(city);
+        localStorage.setItem("cities", JSON.stringify(cities));
+        cityInput.value = "";
+        const newCityWeatherCard = createWeather(newCityWeatherData);
+        weatherContainer.appendChild(newCityWeatherCard);
+      } else {
+        console.log(`Nie znaleziono miasta ${city}!`);
+      }
     } else {
       console.log(`${city} zostało już wyszukane!`);
     }
   }
 }
 
-function clearLocalStorage() {
-  localStorage.clear();
-  cities = [];
+function removeCity(city) {
+  const index = cities.indexOf(city);
+  if (index > -1) {
+    cities.splice(index, 1);
+  }
+  localStorage.setItem("cities", JSON.stringify(cities));
+  updateWeather();
 }
 
-window.onload = clearLocalStorage;
 setInterval(updateWeather, 300000);
