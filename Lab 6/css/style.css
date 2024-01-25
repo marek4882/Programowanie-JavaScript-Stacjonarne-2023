@@ -1,28 +1,18 @@
-* {
-  box-sizing: border-box;
+canvas {
+  border: 1px solid black;
+  width: 300px;
+  height: 300px;
 }
-body {
-  background: #f2f2f2;
+button {
+  margin: 10px;
 }
-.container {
-  width: 400px;
-  height: 400px;
-  border: 2px solid #ccc;
-  position: relative;
+#timer {
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  color: #333;
 }
-.container__hole {
-  border: 2px solid black;
-  border-radius: 100%;
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.container__ball {
-  background: grey;
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
+#score {
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  color: #333;
 }
